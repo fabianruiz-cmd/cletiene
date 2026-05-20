@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-sans: 'DM Sans', sans-serif;
+    
+    /* Corporate Greens and Blues Theme */
+    --background: 180 20% 99%;
+    --foreground: 173 50% 10%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 173 50% 10%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 173 50% 10%;
+    
+    /* Primary: Deep Corporate Green */
+    --primary: 173 80% 26%; 
+    --primary-foreground: 0 0% 100%;
+    
+    /* Secondary: Soft teal for contrast */
+    --secondary: 173 30% 90%;
+    --secondary-foreground: 173 80% 20%;
+    
+    /* Muted: Grayish green */
+    --muted: 180 15% 94%;
+    --muted-foreground: 173 20% 45%;
+    
+    /* Accent: Corporate Blue */
+    --accent: 199 89% 32%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 180 20% 88%;
+    --input: 180 20% 88%;
+    --ring: 173 80% 26%;
+    
+    --radius: 0.75rem;
+
+    /* Sidebar Theme: Very Dark Corporate Green */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 0 0% 10%;
+    --sidebar-primary: 173 80% 26%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 175 20% 94%;
+    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-border: 0 0% 88%;
+    --sidebar-ring: 173 80% 26%;
+  }
+
+  .dark {
+    --background: 173 50% 5%;
+    --foreground: 180 20% 96%;
+    
+    --card: 175 60% 8%;
+    --card-foreground: 180 20% 96%;
+    
+    --popover: 175 60% 8%;
+    --popover-foreground: 180 20% 96%;
+    
+    --primary: 173 70% 45%;
+    --primary-foreground: 175 60% 10%;
+    
+    --secondary: 175 50% 15%;
+    --secondary-foreground: 180 20% 96%;
+    
+    --muted: 175 40% 15%;
+    --muted-foreground: 180 15% 65%;
+    
+    --accent: 199 80% 50%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 175 40% 20%;
+    --input: 175 40% 20%;
+    --ring: 173 70% 45%;
+    
+    --sidebar-background: 0 0% 10%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 173 70% 45%;
+    --sidebar-primary-foreground: 0 0% 10%;
+    --sidebar-accent: 0 0% 18%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 173 70% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+    @apply tracking-tight font-bold text-foreground;
+  }
+}
+
+/* Custom premium hover and elevation utilities */
+@layer utilities {
+  .glass-effect {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 dark:bg-black/50 dark:border-white/10;
+  }
+  .hover-elevate {
+    @apply transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/10;
+  }
+}

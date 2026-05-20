@@ -1,0 +1,388 @@
+
+
+
+Wip Tech / Documentación para Integradores
+Ambiente Producción
+
+
+Versión 2.3
+Última actualización: febrero 2026
+Confidencial – Uso exclusivo para procesos de evaluación e integración
+
+
+Este documento describe los endpoints y lineamientos técnicos necesarios para integrar sistemas externos con la plataforma Wip.
+
+La API permite:
+
+Crear servicios
+Consultar servicios por diferentes criterios
+Consultar suscripciones
+Recibir actualizaciones en tiempo real mediante Webhooks
+Gestionar información operativa asociada a servicios en campo
+
+Alcance
+Esta documentación está dirigida a equipos técnicos (developers, arquitectos de software y líderes de integración) responsables de implementar la conexión entre sus sistemas internos y Wip.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Contenido
+1)	URL base	2
+2)	ApiKey	2
+3)	Ids	2
+4)	Busqueda de Unidades de negocio y tipos de servicios de servicio por compañia	3
+5)	Creación de servicios	4
+6)	Búsqueda de servicio por id	5
+7)	Búsqueda de servicio por Placa, documento, Nombre de usuario y teléfono	5
+8)	Búsqueda de suscripciones por documento o por placa	7
+9)	Búsqueda de detalles de la suscripción	7
+10)	WebHook actualización de servicio	8
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1)URL base
+
+La url base para el consumo de las siguientes Apis es la siguiente:
+
+https://api.wiptool.com
+
+
+2)ApiKey
+
+xWjGb5Zt84g4YEBEe4C8ZxNWkVswJg7ZRbkLwJeQ
+
+3)Ids 
+
+Los siguientes Ids serán proporcionados posteriormente por correo electronico ya que son diferentes para cada cliente:
+
+@UserId=     67a0dcadba440e5f0db90ccc
+@buOwnerId=  67379dff213b73f99523f061
+@ownerId=    67379dff213b73f99523f061
+@companyId=  67379dff213b73f99523f061
+@ownerName=  MULTISERVICIOS CL TIENE
+@BuOwnerName= MULTISERVICIOS CL TIENE
+
+
+Los siguientes Ids son proporcionados por la api expuesta en el inciso #4.
+
+@businessUnitId
+@businessUnitName
+@formId
+@companyFormId
+@serviceTypeName
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4)Búsqueda de Unidades de negocio y tipos de servicios de servicio por compañia
+
+Búsqueda de Unidades de negocio y tipos de servicios
+GET	/business/api/v1/BusinessUnit/company/@companyId/business-units/services
+Mecanismo de autenticación	ApiKey
+Headers	Authorization	@ApiKey
+	Content-Type	application/json
+respuesta	{
+  "businessUnits": [
+    {
+      "id": "63efa2b6be4411fee7d3186c",
+      "name": "Unidad propietaria 2",
+      "serviceTypes": [
+        {
+          "name": "Domicilio test",
+          "formId": "6310d1dd2104005d7466e1ae",
+          "companyFormId": "da84cf59-1069-48de-83dc-21b3448873e8"
+        },
+        {
+          "name": "Asistencia telefonica fixit",
+          "formId": "63f8fb99871bec34cfe793eb",
+          "companyFormId": "eafd3c7d-2b8f-4dee-9886-5f7b2f8f5396"
+        }
+      ]
+    },
+    {
+      "id": "63ef87edbe4411fee7d3185a",
+      "name": "Unidad propietaria 1",
+      "serviceTypes": [
+        {
+          "name": "test sergio",
+          "formId": "63d16fec500a4c99b491c711",
+          "companyFormId": "91f81bc9-f670-474d-ad05-06b04d28eb15"
+        },
+        {
+          "name": "Domicilio test",
+          "formId": "6310d1dd2104005d7466e1ae",
+          "companyFormId": "da84cf59-1069-48de-83dc-21b3448873e8"
+        }
+      ]
+    }
+  ]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+5)Creación de servicios
+
+Creación de servicios
+POST	/service/api/v2/Service/@CompanyId/service/@UserId
+Mecanismo de autenticacion	ApiKey
+Headers	Authorization	@ApiKey
+	Content-Type	application/json
+JSON	{
+    "owner": {
+        "id": "@OwnerId",
+        "name": "name owner",
+        "type": "Owner"
+    },
+    "expedient": "der",
+    "userName": "user name",
+    "userPhone": "",
+    "businessUnitId": "@businessUnitId",
+    "businessUnitName": "@businessUnitName",
+    "plate": "XSD-ADF",
+    "finalClientName": "oscar figueroa",
+    "whereTo": {
+        "address": "CALLE 39 N 1-15 CONJUNTO RESIDENCIAL SANTA INES ",
+        "otherInfo": "Chapinero",
+        "city": "Medellin - Antioquia"
+    },
+    "fromWhere": {
+        "address": "calle 15 #12-09",
+        "otherInfo": "modelia",
+        "city": "Medellin - Antioquia"
+    },
+    "userClientePhone": "300312",
+    "customerDocument": "1072",
+    "scheduledDate": "2025-10-31T19:46:00.000Z",
+    "type": "@serviceTypeName",
+    "note": "",
+    "customerId": null,
+    "automaticCalculation": true,
+    "fields": {
+        "Quien reporta": "marisol",
+        "Estado de pago": "confirmado",
+        "Cuenta Base": "456783"
+    },
+    "formId": "@formId",
+    "companyFormId": "@comapanyFormId",
+    "creatorUser": {
+        "id": "@userId",
+        "name": "name user creator"
+    },
+    "buOwner": {
+        "id": "@BuOwnerId",
+        "name": "name buOwner",
+        "type": "BuOwner"
+    }
+}
+respuesta	Body del servicio
+
+
+6)Búsqueda de servicio por id
+
+Busqueda de servicio
+GET	/service/api/v1/Service/@Serviceid
+Mecanismo de autenticacion	ApiKey
+Headers	Authorization	@ApiKey
+	Content-Type	application/json
+respuesta	Body del servicio
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+7)Búsqueda de servicio por Placa, documento, Nombre de usuario y teléfono
+
+Búsqueda de servicio
+POST	/service/api/v1/Service/search
+Mecanismo de autenticacion	ApiKey
+Headers	Authorization	@ApiKey
+	Content-Type	application/json
+Body (JSON)	{
+  "pageSize": 0,
+  "page": 0,
+  "sort": "scheduledDate",
+  "sortDirection": "Desc",
+  "businessUnitId": "string",
+  "companyId": "string",
+  "userId": "string",
+  "subject": "string" // valor de busqueda
+}
+Respuesta
+(Formatear)	{"pageSize":0,"page":0,"sort":"string","sortDirection":"Desc","filterValue":[{"property":"string","value":["string"],"operator":"Equal"}],"pagesQuantity":0,"totalRows":0,"data":[{"id":"string","createdDate":"2026-02-18T15:46:27.045Z","updateDate":"2026-02-18T15:46:27.045Z","expedient":"string","userName":"string","userPhone":"string","userClientePhone":"string","finalClientName":"string","customerDocument":"string","record":[{"date":"2026-02-18T15:46:27.045Z","userId":"string","usermName":"string","description":"string"}],"plate":"string","price":0,"status":"Pending","serviceTime":"string","provision":{"current":{"time":"string","km":0},"estimated":{"time":"string","km":0}},"serviceTimeTracking":{"supplierAcceptanceDate":"2026-02-18T15:46:27.045Z","supplierAcceptanceTime":"string","collaboratorAcceptanceDate":"2026-02-18T15:46:27.045Z","collaboratorAcceptanceTime":"string"},"acceptServiceDate":"2026-02-18T15:46:27.045Z","inServiceDate":"2026-02-18T15:46:27.045Z","startServiceDate":"2026-02-18T15:46:27.045Z","finishServiceDate":"2026-02-18T15:46:27.045Z","responsible":"Client","trafficStatus":"Attention","trafficDate":"2026-02-18T15:46:27.045Z","scheduledDate":"2026-02-18T15:46:27.045Z","serviceUrgency":"string","type":"string","businessUnitId":"string","businessUnitName":"string","formId":"string","companyFormId":"string","buOwner":{"id":"string","name":"string","nif":"string","type":"Supplier","lastAssignment":"2026-02-18T15:46:27.045Z","reAssignment":true},"owner":{"id":"string","name":"string","nif":"string","type":"Supplier","lastAssignment":"2026-02-18T15:46:27.045Z","reAssignment":true},"creatorUser":{"id":"string","name":"string"},"supplier":{"id":"string","name":"string","nif":"string","type":"Supplier","lastAssignment":"2026-02-18T15:46:27.045Z","reAssignment":true},"client":{"id":"string","name":"string","nif":"string","type":"Supplier","lastAssignment":"2026-02-18T15:46:27.045Z","reAssignment":true},"collaborator":{"id":"string","name":"string","nif":"string","type":"Supplier","lastAssignment":"2026-02-18T15:46:27.045Z","reAssignment":true},"fromWhere":{"address":"string","city":"string","lat":"string","lon":"string","otherInfo":"string"},"whereTo":{"address":"string","city":"string","lat":"string","lon":"string","otherInfo":"string"},"management":"Online","journeyRoute":{"startingPoint":{"latitude":0,"longitude":0,"timestamp":"2026-02-18T15:46:27.045Z"},"originAddress":{"latitude":0,"longitude":0,"timestamp":"2026-02-18T15:46:27.045Z"},"endAddress":{"latitude":0,"longitude":0,"timestamp":"2026-02-18T15:46:27.045Z"},"originCity":"string","destinationCity":"string"},"automaticAssignment":{"groupId":"string","automaticAssignmentType":"Supplier","hasAutomaticAssignment":true},"url":"string","hasQualification":true,"isMultimedia":true,"baseValue":0,"totalValue":0,"automaticCalculation":true,"note":"string","fields":{"additionalProp1":"string","additionalProp2":"string","additionalProp3":"string"},"wipExpedient":"string"}]}
+
+
+
+
+
+
+8)Búsqueda de suscripciones por documento o por placa
+
+Búsqueda de servicio
+GET	/Customer/api/v1/Customer/Subscription?companyId=@companyId&businessUnitId=@ businessUnitId&searchTerm=@subject
+Mecanismo de autenticacion	ApiKey
+Headers	Authorization	@ApiKey
+	Content-Type	application/json
+Body (JSON)	N/A
+Respuesta
+(Formatear)	{"id":"string","createdAt":"2026-02-18T21:48:31.226Z","updatedAt":"2026-02-18T21:48:31.226Z","name":"string","phone":"string","email":"string","documentId":"string","plate":"string","companyId":"string","businessUnitIds":["string"],"address1":"string","location1":"string","address2":"string","location2":"string","originFile":"Auto","additionalData":{"additionalProp1":"string","additionalProp2":"string","additionalProp3":"string"}}
+
+9)Búsqueda de detalles de la suscripción  
+
+Busqueda de servicio
+POST	/Customer/api/v1/Customer/Subscription/Consumption
+Mecanismo de autenticacion	ApiKey
+Headers	Authorization	@ApiKey
+	Content-Type	application/json
+Body (JSON)	{
+  "customerId": "string",
+  "businessUnitId": "string",
+  "timeZone": "America/Bogota",
+  "companyId": "string"
+}
+Respuesta
+(Formatear)	{"id":"string","createdAt":"2026-02-18T21:53:39.477Z","updatedAt":"2026-02-18T21:53:39.477Z","name":"string","businessUnitId":"string","companyId":"string","code":"string","typeServices":[{"id":"string","name":"string","enabled":true,"serviceLimit":0,"baseValue":0,"consumption":0,"availability":true}]}
+
+
+
+
+10)WebHook actualización de servicio
+
+
+WebHook Actualización/ del servicio
+POST	/status
+Headers	Authorization	@ApiKey
+	Content-Type	application/json
+JSON	{
+    "id": "string",
+    "expedient": "string",
+    "wipExpedient": "string",
+    "plate": "string",
+    "finalClientName": "string",
+    "customerDocument": "string",
+    "userClientePhone": "string",
+    "type": "string",
+    "status": "string",
+}
+respuesta	{ response: true }
+
+
